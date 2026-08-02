@@ -1,0 +1,17 @@
+akun login admin:
+Email: admin@bioskop.com
+Password: password123
+Role: admin
+
+Akun Login Customer
+Email: wahyuniseptianingsih07@gmail.com
+Password: password123
+Role: customer
+
+Kelompok CV.Bioskop Keren Jaya  
+Ketua Kelompok: Rio Wijaya s (22SA11A286)
+Anggota:  
+1. Wahyuni Septianingsih (22SA11A047)
+2. wisnu Pratama aji (22SA11A027)
+3. iqbal sidiq (22SA11A269)
+
