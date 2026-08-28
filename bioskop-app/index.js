@@ -13,7 +13,7 @@ const db = mysql.createConnection({
   user: "root",
   password: "",
   database: "bioskop_keren",
-  port: 3308   // ⬅️ WAJIB 3308 Sesuai Pengaturan Ayu
+  port: 3308   
 });
 
 db.connect((err) => {
@@ -24,7 +24,7 @@ db.connect((err) => {
   console.log("Database MySQL Terhubung!");
 });
 
-// ================= AUTH =================
+
 app.post("/api/register", (req, res) => {
   const { name, email, password } = req.body;
   const sql = "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, 'customer')";
@@ -47,7 +47,6 @@ app.post("/api/login", (req, res) => {
   });
 });
 
-// ================= MOVIES =================
 app.get("/api/movies", (req, res) => {
   db.query("SELECT * FROM movies", (err, results) => {
     if (err) return res.status(500).send(err);
@@ -83,7 +82,6 @@ app.put("/api/movies/:id", (req, res) => {
   });
 });
 
-// ================= SCHEDULES =================
 app.get("/api/schedules", (req, res) => {
   db.query("SELECT * FROM schedules", (err, results) => {
     if (err) return res.status(500).send(err);
@@ -107,7 +105,6 @@ app.delete("/api/schedules/:id", (req, res) => {
   });
 });
 
-// ================= BOOKINGS (BAGIAN YANG DIPERBAIKI) =================
 app.post("/api/bookings", (req, res) => {
   const { userId, movieTitle, seats, totalPrice, proof_image_url } = req.body;
   const sql = "INSERT INTO bookings (user_id, movie_title, seats, total_price, status, proof_image_url) VALUES (?, ?, ?, ?, 'Pending', ?)";
