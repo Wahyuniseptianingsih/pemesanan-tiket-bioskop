@@ -61,11 +61,7 @@ Role ditentukan dari kolom `role` pada tabel `users` (`admin` atau `customer`), 
 
 ###  Akun Customer Contoh
 
-| Email | Password |
-|---|---|
-| ` ` | ` ` |
-
-*(Atau buat akun customer baru sendiri lewat halaman Register.)*
+Belum ada akun customer bawaan — silakan buat akun baru sendiri lewat halaman **Register**, lalu login menggunakan email & password yang kamu daftarkan.
 
 ---
 
@@ -187,7 +183,7 @@ Frontend berjalan di `http://localhost:3000`.
 
 ### 4. Login
 - **Sebagai Admin** → `admin@bioskop.com` / `password123`
-- **Sebagai Customer** → daftar akun baru lewat halaman Register, atau gunakan akun contoh di atas.
+- - **Sebagai Customer** → daftar akun baru lewat halaman Register.
 
 ---
 
