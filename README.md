@@ -63,7 +63,7 @@ Role ditentukan dari kolom `role` pada tabel `users` (`admin` atau `customer`), 
 
 | Email | Password |
 |---|---|
-| `wahyuniseptianingsih07@gmail.com` | `password123` |
+| ` ` | ` ` |
 
 *(Atau buat akun customer baru sendiri lewat halaman Register.)*
 
