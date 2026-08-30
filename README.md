@@ -73,47 +73,42 @@ Role ditentukan dari kolom `role` pada tabel `users` (`admin` atau `customer`), 
 
 Alur customer diurutkan dari mulai membuka aplikasi sampai mendapat e-tiket.
 
-### 1. Beranda (Daftar Film)
-Menampilkan daftar film yang sedang tayang lengkap dengan poster. Bisa diakses tanpa login.
-
-![Beranda](screenshots/customer/customer_01_beranda.png)
-
-### 2. Halaman Login
+### 1. Halaman Login
 Customer masuk menggunakan email & password yang sudah terdaftar.
 
 ![Login](screenshots/customer/customer_02_login.png)
 
-### 3. Halaman Register (Buat Akun Baru)
+### 2. Halaman Register (Buat Akun Baru)
 Pendaftaran akun baru — otomatis dibuat dengan role `customer`.
 
 ![Register](screenshots/customer/customer_03_register.png)
 
-### 4. Beranda Setelah Login
+### 3. Beranda Setelah Login
 Setelah login, navbar berubah menampilkan nama user, tombol **Tiket Saya**, dan **Logout**.
 
 ![Beranda setelah login](screenshots/customer/customer_04_beranda-setelah-login.png)
 
-### 5. Detail Film & Pilih Jadwal
+### 4. Detail Film & Pilih Jadwal
 Menampilkan sinopsis, durasi, dan pilihan jadwal tayang (jam & studio) untuk film yang dipilih.
 
 ![Detail film](screenshots/customer/customer_05_detail-film.png)
 
-### 6. Pilih Kursi
+### 5. Pilih Kursi
 Customer memilih kursi yang tersedia dari denah kursi studio (kursi yang dipilih berwarna pink).
 
 ![Pilih kursi](screenshots/customer/customer_06_pilih-kursi.png)
 
-### 7. Konfirmasi Pembayaran
+### 6. Konfirmasi Pembayaran
 Customer memilih metode pembayaran (GoPay/OVO/Dana/Bank Transfer) dan mengunggah bukti transfer.
 
 ![Pembayaran](screenshots/customer/customer_07_pembayaran.png)
 
-### 8. Riwayat Tiket Saya
+### 7. Riwayat Tiket Saya
 Menampilkan seluruh riwayat pemesanan beserta statusnya: **Menunggu Verifikasi** (kuning) atau **Lunas / Siap Digunakan** (hijau) setelah dikonfirmasi admin.
 
 ![Tiket saya](screenshots/customer/customer_08_tiket-saya.png)
 
-### 9. E-Tiket
+### 8. E-Tiket
 Tiket digital dengan QR code yang bisa dipindai, muncul setelah pembayaran diverifikasi admin.
 
 ![E-Tiket](screenshots/customer/customer_09_e-tiket.png)
