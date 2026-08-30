@@ -1,186 +1,209 @@
-# Bioskop Keren - Sistem Pemesanan Tiket Bioskop Online
+# 🎬 Bioskop Keren — Sistem Pemesanan Tiket Bioskop Online
 
-Aplikasi pemesanan tiket bioskop berbasis web. User bisa pilih film, pilih jadwal tayang, pilih kursi, lalu bayar dengan cara upload bukti transfer manual yang nanti diverifikasi sama admin.
+Aplikasi web pemesanan tiket bioskop *full-stack* yang memungkinkan pengguna memilih film, jadwal tayang, dan kursi secara online, lengkap dengan alur pembayaran manual (upload bukti transfer) dan verifikasi oleh admin.
 
-Ada dua jenis akun di sistem ini: **customer** (yang pesan tiket) dan **admin** (yang kelola film, jadwal, dan verifikasi pembayaran).
+Terdapat dua role pengguna dengan hak akses berbeda: **Customer** (pemesan tiket) dan **Admin** (pengelola film, jadwal, dan verifikasi pembayaran).
 
-## Tech Stack
+---
 
-- **Frontend**: React.js (React Router DOM v7, Axios)
-- **Backend**: Node.js + Express.js, REST API biasa
-- **Database**: MySQL/MariaDB
-- **Styling**: inline CSS di dalam `App.js` sendiri, belum pakai library CSS terpisah
-- **Autentikasi**: login/register sederhana, cek email + password langsung ke tabel `users`, role disimpan di kolom `role` (`admin`/`customer`)
-- **E-tiket**: QR code di-generate lewat API `api.qrserver.com`
+## 🧰 Tech Stack
 
-Semua ditulis pakai JavaScript — backend pakai ES Modules, frontend pakai JSX.
+| Bagian | Teknologi |
+|---|---|
+| **Frontend** | React.js (React Router DOM v7, Axios) |
+| **Backend** | Node.js + Express.js (REST API) |
+| **Database** | MySQL / MariaDB |
+| **Styling** | CSS-in-JS (inline `<style>` di dalam `App.js`) |
+| **Autentikasi** | Login/Register sederhana berbasis tabel `users` (role: `admin` / `customer`) |
+| **Lainnya** | QR Code generator (`api.qrserver.com`) untuk E-Tiket |
 
-### Struktur folder
+**Bahasa pemrograman utama:** JavaScript (ES Modules di backend, JSX di frontend).
+
+### Struktur Folder
 
 ```
 pemesanan-tiket-bioskop/
-├── backend-app/          → Express API, semua endpoint ada di index.js
-├── frontend-bioskop/     → React app (Create React App), semua halaman ada di src/App.js
-├── bioskop_keren.sql     → dump database (struktur tabel + data awal)
+├── backend-app/          # Express REST API
+│   ├── index.js          # Semua route API ada di sini
+│   └── package.json
+├── frontend-bioskop/     # React App (Create React App)
+│   ├── src/App.js        # Semua halaman & routing ada di sini
+│   └── public/
+├── bioskop_keren.sql     # Dump database (struktur + data awal)
 └── README.md
 ```
 
-Alurnya: React (localhost:3000) manggil Express API (localhost:3001), Express yang ngobrol ke MySQL (localhost:3308).
+### Arsitektur
 
-## Soal Role
+```
+[ Browser ] → [ React (Frontend) : 3000 ] → [ Express REST API (Backend) : 3001 ] → [ MySQL : 3308 ]
+```
 
-Role customer/admin ditentukan dari kolom `role` di tabel `users`. Pas login, data user (termasuk role) dikirim ke frontend dan disimpan di localStorage, dipakai buat nentuin menu dan halaman mana yang boleh diakses.
+---
 
-Penting: **di aplikasi ini tidak ada cara untuk bikin akun admin lewat form register** — endpoint `/api/register` selalu bikin akun dengan role `customer` (cek di `index.js`). Akun admin sudah ada dari awal karena diseed langsung di `bioskop_keren.sql`. Jadi kalau mau login sebagai admin, pakai akun yang sudah disediakan di bawah ini, bukan daftar baru.
+## 👤 Role & Hak Akses
 
-**Akun admin:**
-- Email: `admin@bioskop.com`
-- Password: `password123`
+Role ditentukan dari kolom `role` pada tabel `users` (`admin` atau `customer`), dikirim ke frontend saat login lalu disimpan di `localStorage` (`authData`).
 
-**Akun customer contoh:**
-- Email: `wahyuniseptianingsih07@gmail.com`
-- Password: `password123`
+| Role | Bisa akses |
+|---|---|
+| **Guest** (belum login) | Lihat beranda & detail film, tidak bisa pesan tiket |
+| **Customer** | Semua fitur guest + pesan tiket, pembayaran, riwayat tiket, e-tiket |
+| **Admin** | Kelola film & jadwal, verifikasi pembayaran (tidak bisa memesan tiket) |
 
-(atau daftar sendiri lewat halaman register, nanti otomatis jadi customer)
+> ⚠️ **Catatan penting:** Aplikasi ini **tidak punya form untuk membuat akun admin baru** — form register (`/register`) hanya membuat akun dengan role `customer` (lihat `index.js`, endpoint `/api/register`). Akun admin sudah tersedia langsung dari data awal (seed) di `bioskop_keren.sql`.
 
-## Tampilan & Fitur - Customer
+### 🔑 Akun Admin Default
 
-**1. Beranda**
+| Email | Password |
+|---|---|
+| `admin@bioskop.com` | `password123` |
 
-Daftar film yang lagi tayang, bisa dilihat tanpa login.
+### 🔑 Akun Customer Contoh
+
+| Email | Password |
+|---|---|
+| `wahyuniseptianingsih07@gmail.com` | `password123` |
+
+*(Atau buat akun customer baru sendiri lewat halaman Register.)*
+
+---
+
+## 🖼️ Tampilan Aplikasi — Role Customer
+
+Alur customer diurutkan dari mulai membuka aplikasi sampai mendapat e-tiket.
+
+### 1. Beranda (Daftar Film)
+Menampilkan daftar film yang sedang tayang lengkap dengan poster. Bisa diakses tanpa login.
 
 ![Beranda](screenshots/customer/customer_01_beranda.png)
 
-**2. Login**
+### 2. Halaman Login
+Customer masuk menggunakan email & password yang sudah terdaftar.
 
 ![Login](screenshots/customer/customer_02_login.png)
 
-**3. Register**
-
-Bikin akun baru, otomatis dapat role customer.
+### 3. Halaman Register (Buat Akun Baru)
+Pendaftaran akun baru — otomatis dibuat dengan role `customer`.
 
 ![Register](screenshots/customer/customer_03_register.png)
 
-**4. Beranda setelah login**
-
-Navbar berubah, muncul nama user, tombol "Tiket Saya", dan Logout.
+### 4. Beranda Setelah Login
+Setelah login, navbar berubah menampilkan nama user, tombol **Tiket Saya**, dan **Logout**.
 
 ![Beranda setelah login](screenshots/customer/customer_04_beranda-setelah-login.png)
 
-**5. Detail film + pilih jadwal**
-
-Sinopsis, durasi, dan pilihan jam tayang per studio.
+### 5. Detail Film & Pilih Jadwal
+Menampilkan sinopsis, durasi, dan pilihan jadwal tayang (jam & studio) untuk film yang dipilih.
 
 ![Detail film](screenshots/customer/customer_05_detail-film.png)
 
-**6. Pilih kursi**
-
-Klik kursi yang mau dipesan, kursi terpilih berubah warna pink.
+### 6. Pilih Kursi
+Customer memilih kursi yang tersedia dari denah kursi studio (kursi yang dipilih berwarna pink).
 
 ![Pilih kursi](screenshots/customer/customer_06_pilih-kursi.png)
 
-**7. Pembayaran**
-
-Pilih metode bayar (GoPay/OVO/Dana/Bank Transfer), upload bukti transfer.
+### 7. Konfirmasi Pembayaran
+Customer memilih metode pembayaran (GoPay/OVO/Dana/Bank Transfer) dan mengunggah bukti transfer.
 
 ![Pembayaran](screenshots/customer/customer_07_pembayaran.png)
 
-**8. Riwayat tiket saya**
-
-Semua pesanan kelihatan di sini, statusnya ada dua: "Menunggu Verifikasi" (masih pending, admin belum konfirmasi) atau "Lunas / Siap Digunakan" (udah diverifikasi admin).
+### 8. Riwayat Tiket Saya
+Menampilkan seluruh riwayat pemesanan beserta statusnya: **Menunggu Verifikasi** (kuning) atau **Lunas / Siap Digunakan** (hijau) setelah dikonfirmasi admin.
 
 ![Tiket saya](screenshots/customer/customer_08_tiket-saya.png)
 
-**9. E-tiket**
+### 9. E-Tiket
+Tiket digital dengan QR code yang bisa dipindai, muncul setelah pembayaran diverifikasi admin.
 
-Muncul setelah status pembayaran verified, ada QR code-nya.
+![E-Tiket](screenshots/customer/customer_09_e-tiket.png)
 
-![E-tiket](screenshots/customer/customer_09_e-tiket.png)
+---
 
-## Tampilan & Fitur - Admin
+## 🖼️ Tampilan Aplikasi — Role Admin
 
-**1. Login admin**
-
-Beda sama customer, navbar-nya nampilin tombol "Halaman Admin".
+### 1. Login Admin
+Login menggunakan akun dengan role `admin`. Navbar menampilkan tombol **Halaman Admin**, bukan **Tiket Saya**.
 
 ![Login admin](screenshots/admin/admin_01_login-berhasil.png)
 
-**2. Dashboard admin**
-
-Ini halaman utama admin. Ada tabel verifikasi pembayaran (yang masih pending), daftar film, dan daftar jadwal.
+### 2. Panel Admin (Dashboard)
+Halaman utama admin: tombol tambah film & jadwal, tabel **Verifikasi Pembayaran User** (pembayaran berstatus *Pending*), daftar film, dan daftar jadwal.
 
 ![Dashboard admin](screenshots/admin/admin_02_dashboard.png)
 
-**3. Tambah film**
-
-Form isi judul, durasi, url poster, sama sinopsis. Form yang sama dipakai juga buat edit film.
+### 3. Tambah Film Baru
+Form untuk menambah data film (judul, durasi, URL poster, sinopsis). Form yang sama juga dipakai untuk mengedit film.
 
 ![Tambah film](screenshots/admin/admin_03_tambah-film.png)
 
-**4. Tambah jadwal tayang**
-
-Pilih film, atur jam tayang, harga tiket, dan nama studio.
+### 4. Tambah Jadwal Tayang
+Form untuk menambah jadwal tayang baru (pilih film, waktu tayang, harga tiket, nama studio).
 
 ![Tambah jadwal](screenshots/admin/admin_04_tambah-jadwal.png)
 
-## Ringkasan fitur
+---
 
-Customer:
-- Register & login
-- Lihat daftar film & detail film
-- Pilih jadwal dan kursi
-- Pesan tiket + upload bukti bayar
-- Lihat riwayat pesanan & status pembayaran
-- Lihat e-tiket dengan QR code
+## ✨ Daftar Fitur Lengkap
 
-Admin:
-- Login (akun sudah ada dari awal, bukan daftar sendiri)
-- Verifikasi pembayaran yang masuk
-- Tambah & edit film
-- Tambah & hapus jadwal tayang
+**Customer**
+- Register & Login
+- Melihat daftar film yang sedang tayang
+- Melihat detail film (sinopsis, durasi, jadwal tayang per studio)
+- Memilih kursi dari denah kursi interaktif
+- Melakukan pemesanan tiket & upload bukti pembayaran manual
+- Melihat riwayat pemesanan tiket beserta status pembayaran
+- Melihat E-Tiket dengan QR code setelah pembayaran diverifikasi
 
-## Cara Jalanin
+**Admin**
+- Login sebagai admin (akun sudah tersedia dari seed database, tidak ada form pendaftaran admin)
+- Melihat & memverifikasi daftar pembayaran yang masuk (menyetujui bukti transfer)
+- Menambah film baru
+- Mengedit data film yang sudah ada
+- Menambah jadwal tayang baru (film, jam, harga, studio)
+- Menghapus jadwal tayang
 
-**1. Setup database**
+---
 
+## ⚙️ Cara Menjalankan Proyek
+
+### 1. Setup Database
+Buat database MySQL/MariaDB bernama `bioskop_keren`, lalu import file `bioskop_keren.sql`:
 ```bash
 mysql -u root -p bioskop_keren < bioskop_keren.sql
 ```
+> Sesuaikan koneksi database (`host`, `user`, `password`, `port`) pada `backend-app/index.js` jika berbeda dari environment kamu (default: port `3308`).
 
-Cek dulu koneksi database di `backend-app/index.js` (host, user, password, port) — defaultnya port `3308`, sesuaikan sama setup MySQL kamu kalau beda.
-
-**2. Backend**
-
+### 2. Jalankan Backend
 ```bash
 cd backend-app
 npm install
 node index.js
 ```
+Backend berjalan di `http://localhost:3001`.
 
-Jalan di `http://localhost:3001`
-
-**3. Frontend**
-
+### 3. Jalankan Frontend
 ```bash
 cd frontend-bioskop
 npm install
 npm start
 ```
+Frontend berjalan di `http://localhost:3000`.
 
-Jalan di `http://localhost:3000`
+### 4. Login
+- **Sebagai Admin** → `admin@bioskop.com` / `password123`
+- **Sebagai Customer** → daftar akun baru lewat halaman Register, atau gunakan akun contoh di atas.
 
-**4. Login**
+---
 
-Pakai akun admin atau customer yang sudah disebutkan di atas.
+## 📝 Catatan Teknis
 
-## Beberapa hal yang masih perlu diperbaiki
+- Password pada tabel `users` masih disimpan dalam bentuk teks biasa (belum di-hash) — cocok untuk pembelajaran/skripsi, namun **tidak disarankan untuk produksi**.
+- Endpoint booking (`POST /api/bookings`) tidak melakukan pengecekan kursi yang sudah dipesan orang lain di sisi backend (validasi kursi terpakai saat ini hanya di state frontend).
+- Beberapa endpoint admin (tambah/edit film, tambah/hapus jadwal, verifikasi pembayaran) belum memiliki middleware pengecekan role di backend — pengecekan role saat ini hanya dilakukan di sisi frontend (routing React).
 
-Ini disclosure jujur aja biar transparan, bukan bug tapi hal yang belum sempat digarap:
+---
 
-- Password masih disimpan plain text di database, belum di-hash. Untuk tugas kuliah masih oke, tapi kalau mau dikembangin lebih jauh sebaiknya pakai bcrypt.
-- Backend belum ngecek kursi yang bentrok kalau ada dua orang pesan kursi sama di waktu bersamaan — validasi kursi kepake saat ini cuma di state frontend.
-- Endpoint admin (tambah/edit film, hapus jadwal, verifikasi pembayaran) belum ada middleware cek role di backend, jadi proteksinya masih di level frontend doang.
+## 👩‍💻 Dibuat oleh
 
-## Dibuat oleh
-
-Wahyuni Septianingsih - Mahasiswa Informatika, Universitas Amikom Purwokerto
+**Wahyuni Septianingsih** — Mahasiswa Informatika, Universitas Amikom Purwokerto
