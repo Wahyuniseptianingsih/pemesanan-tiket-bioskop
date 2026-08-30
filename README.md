@@ -1,4 +1,4 @@
-# 🎬 Bioskop Keren — Sistem Pemesanan Tiket Bioskop Online
+#  Bioskop Keren — Sistem Pemesanan Tiket Bioskop Online
 
 Aplikasi web pemesanan tiket bioskop *full-stack* yang memungkinkan pengguna memilih film, jadwal tayang, dan kursi secara online, lengkap dengan alur pembayaran manual (upload bukti transfer) dan verifikasi oleh admin.
 
@@ -6,7 +6,7 @@ Terdapat dua role pengguna dengan hak akses berbeda: **Customer** (pemesan tiket
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
 | Bagian | Teknologi |
 |---|---|
@@ -41,7 +41,7 @@ pemesanan-tiket-bioskop/
 
 ---
 
-## 👤 Role & Hak Akses
+##  Role & Hak Akses
 
 Role ditentukan dari kolom `role` pada tabel `users` (`admin` atau `customer`), dikirim ke frontend saat login lalu disimpan di `localStorage` (`authData`).
 
@@ -51,15 +51,15 @@ Role ditentukan dari kolom `role` pada tabel `users` (`admin` atau `customer`), 
 | **Customer** | Semua fitur guest + pesan tiket, pembayaran, riwayat tiket, e-tiket |
 | **Admin** | Kelola film & jadwal, verifikasi pembayaran (tidak bisa memesan tiket) |
 
-> ⚠️ **Catatan penting:** Aplikasi ini **tidak punya form untuk membuat akun admin baru** — form register (`/register`) hanya membuat akun dengan role `customer` (lihat `index.js`, endpoint `/api/register`). Akun admin sudah tersedia langsung dari data awal (seed) di `bioskop_keren.sql`.
+>  **Catatan penting:** Aplikasi ini **tidak punya form untuk membuat akun admin baru** — form register (`/register`) hanya membuat akun dengan role `customer` (lihat `index.js`, endpoint `/api/register`). Akun admin sudah tersedia langsung dari data awal (seed) di `bioskop_keren.sql`.
 
-### 🔑 Akun Admin Default
+###  Akun Admin Default
 
 | Email | Password |
 |---|---|
 | `admin@bioskop.com` | `password123` |
 
-### 🔑 Akun Customer Contoh
+###  Akun Customer Contoh
 
 | Email | Password |
 |---|---|
@@ -69,7 +69,7 @@ Role ditentukan dari kolom `role` pada tabel `users` (`admin` atau `customer`), 
 
 ---
 
-## 🖼️ Tampilan Aplikasi — Role Customer
+##  Tampilan Aplikasi — Role Customer
 
 Alur customer diurutkan dari mulai membuka aplikasi sampai mendapat e-tiket.
 
@@ -120,7 +120,7 @@ Tiket digital dengan QR code yang bisa dipindai, muncul setelah pembayaran diver
 
 ---
 
-## 🖼️ Tampilan Aplikasi — Role Admin
+##  Tampilan Aplikasi — Role Admin
 
 ### 1. Login Admin
 Login menggunakan akun dengan role `admin`. Navbar menampilkan tombol **Halaman Admin**, bukan **Tiket Saya**.
@@ -144,7 +144,7 @@ Form untuk menambah jadwal tayang baru (pilih film, waktu tayang, harga tiket, n
 
 ---
 
-## ✨ Daftar Fitur Lengkap
+##  Daftar Fitur Lengkap
 
 **Customer**
 - Register & Login
@@ -165,7 +165,7 @@ Form untuk menambah jadwal tayang baru (pilih film, waktu tayang, harga tiket, n
 
 ---
 
-## ⚙️ Cara Menjalankan Proyek
+##  Cara Menjalankan Proyek
 
 ### 1. Setup Database
 Buat database MySQL/MariaDB bernama `bioskop_keren`, lalu import file `bioskop_keren.sql`:
@@ -196,7 +196,7 @@ Frontend berjalan di `http://localhost:3000`.
 
 ---
 
-## 📝 Catatan Teknis
+##  Catatan Teknis
 
 - Password pada tabel `users` masih disimpan dalam bentuk teks biasa (belum di-hash) — cocok untuk pembelajaran/skripsi, namun **tidak disarankan untuk produksi**.
 - Endpoint booking (`POST /api/bookings`) tidak melakukan pengecekan kursi yang sudah dipesan orang lain di sisi backend (validasi kursi terpakai saat ini hanya di state frontend).
@@ -204,6 +204,6 @@ Frontend berjalan di `http://localhost:3000`.
 
 ---
 
-## 👩‍💻 Dibuat oleh
+##  Dibuat oleh
 
-**Wahyuni Septianingsih** — Mahasiswa Informatika, Universitas Amikom Purwokerto
+**Wahyuni Septianingsih** 
